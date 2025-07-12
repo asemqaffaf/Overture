@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { Search, Code, Eye, Users, Zap, Grid, Box, Type, Image, Square, Layout, Download } from 'lucide-react';
+import { Search, Code, Eye, Users, Zap, Grid, Box, Type, Image, Square, Layout, Download, Send } from 'lucide-react';
 
 const VisualComposer = () => {
   const [draggedComponent, setDraggedComponent] = useState(null as any);
@@ -188,6 +188,10 @@ ${codeLines.map((line) => `      ${line}`).join('\n')}
                 <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2'>
                   <Download className='w-4 h-4' />
                   Export
+                </button>
+                <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
+                  <Send className='w-4 h-4' />
+                  Deploy
                 </button>
                 <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
                   <Users className='w-4 h-4' />

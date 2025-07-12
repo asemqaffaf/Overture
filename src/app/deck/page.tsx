@@ -16,7 +16,7 @@ const PitchDeck = () => {
           <h2 className="text-3xl text-gray-700 mb-8">The Component Intelligence Platform for Enterprise Frontend Teams</h2>
           <div className="bg-blue-50 p-6 rounded-lg">
             <p className="text-xl text-gray-800 mb-2"><strong>Founder:</strong> Asem Qaffaf</p>
-            <p className="text-lg text-gray-600">Former: Rakuten Frontend Architect, Expedia Senior Engineer</p>
+            <p className="text-lg text-gray-600">Frontend Architect at Rakuten | Former Senior Engineer at Expedia</p>
           </div>
         </div>
       )
