@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { ChevronRight, Search, Code, Eye, Users, Zap, Grid, Box, Type, Image, Square, Layout, Palette, Download } from 'lucide-react';
+import { Search, Code, Eye, Users, Zap, Grid, Box, Type, Image, Square, Layout, Download } from 'lucide-react';
 
 const VisualComposer = () => {
   const [draggedComponent, setDraggedComponent] = useState(null as any);
