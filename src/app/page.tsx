@@ -1,256 +1,632 @@
 'use client';
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useState } from 'react';
-import { Search, Code, Eye, Users, Zap, Grid, Box, Type, Image, Square, Layout, Download, Send } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, Check, X, Minus } from 'lucide-react';
 
-const VisualComposer = () => {
-  const [draggedComponent, setDraggedComponent] = useState(null as any);
-  const [canvasComponents, setCanvasComponents] = useState([] as any[]);
-  const [selectedComponent, setSelectedComponent] = useState(null as any);
-  const [activeTab, setActiveTab] = useState('design');
-
-  const componentLibraries = [
-    {
-      name: 'Storybook',
-      color: 'bg-pink-100 text-pink-800',
-      components: [
-        { id: 'btn-primary', name: 'Primary Button', icon: Square, props: { variant: 'primary', size: 'md' } },
-        { id: 'btn-secondary', name: 'Secondary Button', icon: Square, props: { variant: 'secondary', size: 'md' } },
-        { id: 'input-text', name: 'Text Input', icon: Type, props: { placeholder: 'Enter text...' } },
-      ],
-    },
-    {
-      name: 'Figma',
-      color: 'bg-purple-100 text-purple-800',
-      components: [
-        { id: 'card-hero', name: 'Hero Card', icon: Layout, props: { title: 'Hero Section', subtitle: 'Compelling headline' } },
-        { id: 'avatar-user', name: 'User Avatar', icon: Users, props: { size: 'lg', status: 'online' } },
-        { id: 'icon-star', name: 'Star Icon', icon: Zap, props: { filled: true, size: 'md' } },
-      ],
-    },
-    {
-      name: 'Bit.dev',
-      color: 'bg-blue-100 text-blue-800',
-      components: [
-        { id: 'grid-responsive', name: 'Responsive Grid', icon: Grid, props: { columns: 3, gap: 'md' } },
-        { id: 'modal-dialog', name: 'Modal Dialog', icon: Box, props: { size: 'md', centered: true } },
-        { id: 'img-optimized', name: 'Optimized Image', icon: Image, props: { lazy: true, responsive: true } },
-      ],
-    },
-  ];
-
-  const handleDragStart = (e: any, component: any, library: any) => {
-    setDraggedComponent({ ...component, library });
-    e.dataTransfer.effectAllowed = 'copy';
-  };
-
-  const handleDragOver = (e: any) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-  };
-
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    if (draggedComponent) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const newComponent = {
-        ...draggedComponent,
-        id: `${draggedComponent.id}-${Date.now()}`,
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
-      setCanvasComponents((prev) => [...prev, newComponent]);
-      setDraggedComponent(null);
-    }
-  };
-
-  const ComponentPreview = ({ component }: { component: any }) => {
-    const Icon = component.icon;
-    return (
-      <div
-        className={`absolute p-2 border-2 border-dashed border-gray-300 rounded-lg bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow ${
-          selectedComponent?.id === component.id ? 'ring-2 ring-blue-500' : ''
-        }`}
-        style={{ left: component.x, top: component.y }}
-        onClick={() => setSelectedComponent(component)}
-      >
-        <div className='flex items-center gap-2'>
-          <Icon className='w-4 h-4 text-gray-600' />
-          <span className='text-sm font-medium text-gray-800'>{component.name}</span>
-          <span className={`text-xs px-2 py-1 rounded ${component.library.color}`}>{component.library.name}</span>
+const slides = [
+  // Slide 1: Title
+  {
+    title: 'Overture',
+    content: (
+      <div className='text-center'>
+        <h1 className='text-4xl sm:text-6xl font-bold text-gray-900 mb-4'>Overture</h1>
+        <h2 className='text-xl sm:text-3xl text-gray-700 mb-8'>The Component Intelligence Platform for Enterprise Frontend Teams</h2>
+        <div className='bg-blue-50 p-6 rounded-lg'>
+          <p className='text-xl text-gray-800 mb-2'>
+            <strong>Founder:</strong> Asem Qaffaf
+          </p>
+          <p className='text-lg text-gray-600'>Frontend Core Architect at Rakuten Group | Ex-Expedia Group Senior Software Engineer</p>
         </div>
       </div>
-    );
-  };
+    ),
+  },
 
-  const generateCode = () => {
-    const codeLines = canvasComponents.map((comp) => {
-      const propsStr = Object.entries(comp.props)
-        .map(([key, value]) => `${key}="${value}"`)
-        .join(' ');
-      return `<${comp.name.replace(/\s+/g, '')} ${propsStr} />`;
-    });
-
-    return `import React from 'react';
-
-export const GeneratedPage = () => {
-  return (
-    <div className="page-container">
-${codeLines.map((line) => `      ${line}`).join('\n')}
-    </div>
-  );
-};`;
-  };
-
-  return (
-    <div className='w-full h-screen bg-gray-50 flex'>
-      {/* Left Sidebar - Component Library */}
-      <div className='w-80 bg-white border-r border-gray-200 flex flex-col'>
-        <div className='p-4 border-b border-gray-200'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-3'>Component Libraries</h2>
-          <div className='relative'>
-            <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4' />
-            <input
-              type='text'
-              placeholder='Search components...'
-              className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-            />
+  // Slide 2: Problem
+  {
+    title: 'The Problem: $2B+ Enterprise Frontend Chaos',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center'>The Hidden Crisis Every CTO Faces</h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'>
+          <div className='bg-red-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-red-800 mb-3'>Tool Fragmentation Crisis</h3>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>Teams juggle 5+ disconnected tools</li>
+              <li>Zero visibility across the component ecosystem</li>
+              <li>40% of developer time wasted</li>
+            </ul>
           </div>
-        </div>
-
-        <div className='flex-1 overflow-y-auto p-4'>
-          {componentLibraries.map((library) => (
-            <div key={library.name} className='mb-6'>
-              <h3 className='text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
-                <span className={`w-3 h-3 rounded-full ${library.color.split(' ')[0]}`}></span>
-                {library.name}
-              </h3>
-              <div className='space-y-2'>
-                {library.components.map((component) => {
-                  const Icon = component.icon;
-                  return (
-                    <div
-                      key={component.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, component, library)}
-                      className='p-3 bg-gray-50 rounded-lg border border-gray-200 cursor-move hover:bg-gray-100 transition-colors'
-                    >
-                      <div className='flex items-center gap-2'>
-                        <Icon className='w-4 h-4 text-gray-600' />
-                        <span className='text-sm font-medium text-gray-800'>{component.name}</span>
-                      </div>
-                      <div className='text-xs text-gray-500 mt-1'>
-                        {Object.entries(component.props)
-                          .slice(0, 2)
-                          .map(([key, value]) => `${key}: ${value}`)
-                          .join(', ')}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+          <div className='bg-red-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-red-800 mb-3'>The Component Graveyard</h3>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>Ghost Components & Zombie Duplicates</li>
+              <li>Orphaned Code & Documentation Decay</li>
+              <li>Multiple versions creating inconsistent UX</li>
+            </ul>
+          </div>
+          <div className='bg-red-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-red-800 mb-3'>Migration Nightmare</h3>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>6-12 months lost productivity</li>
+              <li>Complete workflow disruption</li>
+              <li>Vendor lock-in prevents evolution</li>
+            </ul>
+          </div>
         </div>
       </div>
+    ),
+  },
 
-      {/* Main Canvas Area */}
-      <div className='flex-1 flex flex-col'>
-        {/* Top Toolbar */}
-        <div className='bg-white border-b border-gray-200 p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-4'>
-              <h1 className='text-xl font-semibold text-gray-900'>Visual Composer</h1>
-              <div className='flex items-center gap-2'>
-                <button
-                  onClick={() => setActiveTab('design')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                    activeTab === 'design' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <Eye className='w-4 h-4 inline mr-1' />
-                  Design
-                </button>
-                <button
-                  onClick={() => setActiveTab('code')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                    activeTab === 'code' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <Code className='w-4 h-4 inline mr-1' />
-                  Code
-                </button>
-              </div>
+  // Slide 3: Real Enterprise Pain
+  {
+    title: 'Real Enterprise Pain Points',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Real Enterprise Pain Points</h2>
+        <div className='overflow-x-auto mb-6'>
+          <table className='min-w-full bg-white border border-gray-200 rounded-lg'>
+            <thead className='bg-gray-50'>
+              <tr>
+                <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Company</th>
+                <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Problem</th>
+                <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Annual Cost</th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200'>
+              <tr>
+                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>Netflix</td>
+                <td className='px-6 py-4 text-sm text-gray-500'>12,000+ components, no discovery</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold'>$3M+</td>
+              </tr>
+              <tr>
+                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>Airbnb</td>
+                <td className='px-6 py-4 text-sm text-gray-500'>Component duplication across 50+ teams</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold'>$2M+</td>
+              </tr>
+              <tr>
+                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>Spotify</td>
+                <td className='px-6 py-4 text-sm text-gray-500'>100+ squads, different toolchains</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold'>$1.5M+</td>
+              </tr>
+              <tr>
+                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>Shopify</td>
+                <td className='px-6 py-4 text-sm text-gray-500'>400+ components across 3+ tools</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-red-600 font-semibold'>$800K+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className='bg-gray-100 p-4 rounded-lg'>
+          <h3 className='text-xl font-semibold text-gray-800 mb-2'>The Netflix Reality: Multi-Framework Complexity</h3>
+          <p className='text-gray-700'>Netflix uses React, SSR, and static HTML for performance, but this creates massive architectural complexity. Overture tames this chaos.</p>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 4: Solution
+  {
+    title: 'Solution: Overture',
+    content: (
+      <div className='text-center'>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-2'>Solution: Overture</h2>
+        <p className='text-xl sm:text-2xl text-gray-600 mb-6'>{'Kubernetes for React Components'}</p>
+        <div className='bg-blue-50 p-6 rounded-lg mb-8'>
+          <h3 className='text-2xl font-semibold text-blue-800 mb-3'>Core Value Proposition</h3>
+          <p className='text-xl text-gray-800'>Overture orchestrates your existing tools into one intelligent workflow—no rip-and-replace required.</p>
+        </div>
+        <div className='bg-gray-50 p-4 rounded-lg'>
+          <h4 className='text-lg font-semibold text-gray-900 mb-3'>The Universal Truth</h4>
+          <p className='text-gray-700'>Every frontend framework compiles to vanilla JS, HTML, and CSS. Overture leverages this to provide true framework-agnostic orchestration.</p>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 5: Platform Capabilities
+  {
+    title: 'Platform Capabilities',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Platform Capabilities</h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='bg-white p-6 rounded-lg border border-gray-200'>
+            <h4 className='text-lg font-semibold text-gray-900 mb-3'>1. Universal Component Registry</h4>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>Auto-discovery from any source</li>
+              <li>Privacy-first AI (your keys)</li>
+              <li>Semantic search</li>
+              <li>Duplicate detection</li>
+            </ul>
+          </div>
+          <div className='bg-white p-6 rounded-lg border border-gray-200'>
+            <h4 className='text-lg font-semibold text-gray-900 mb-3'>2. Visual Page Composer</h4>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>Drag-and-drop interface</li>
+              <li>Export to production code</li>
+              <li>Real-time collaboration</li>
+              <li>AI-assisted composition</li>
+            </ul>
+          </div>
+          <div className='bg-white p-6 rounded-lg border border-gray-200'>
+            <h4 className='text-lg font-semibold text-gray-900 mb-3'>3. Migration Intelligence</h4>
+            <ul className='text-gray-700 space-y-2 list-disc list-inside'>
+              <li>Framework-agnostic analysis</li>
+              <li>Netflix-style performance analysis</li>
+              <li>Smart architecture recommendations</li>
+              <li>Universal code transformation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 6: How Overture Handles the Netflix Scenario
+  {
+    title: 'The Netflix Scenario',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>How Overture Handles the Netflix Scenario</h2>
+        <div className='bg-blue-50 p-6 rounded-lg'>
+          <p className='text-lg text-gray-800 mb-4'>
+            <strong>Problem:</strong> Netflix needed different rendering strategies (React, static, SSR) for optimal performance.
+          </p>
+          <p className='text-lg text-gray-800'>
+            <strong>{"Overture's Solution:"}</strong>
+          </p>
+          <ol className='list-decimal list-inside mt-2 space-y-2 text-gray-700'>
+            <li>
+              <strong>Migration Analysis:</strong> AI analyzes which pages need React vs. static HTML vs. SSR.
+            </li>
+            <li>
+              <strong>Automated Transformation:</strong> One-click conversion with preserved component logic.
+            </li>
+            <li>
+              <strong>Performance Validation:</strong> Measure TTI improvements (Netflix saw 50% faster loads).
+            </li>
+            <li>
+              <strong>Unified Management:</strong> A single dashboard to manage all component types.
+            </li>
+          </ol>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 7: Market Opportunity
+  {
+    title: 'Market Opportunity: $27B+',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Market Opportunity: $27B+ Explosive Growth</h2>
+        <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8'>
+          <div className='bg-green-50 p-4 sm:p-6 rounded-lg text-center'>
+            <h3 className='text-lg sm:text-xl font-semibold text-green-800 mb-2'>TAM</h3>
+            <p className='text-2xl sm:text-3xl font-bold text-green-600'>$27B+</p>
+            <p className='text-xs sm:text-sm text-green-700'>Dev Tools by 2033</p>
+          </div>
+          <div className='bg-blue-50 p-4 sm:p-6 rounded-lg text-center'>
+            <h3 className='text-lg sm:text-xl font-semibold text-blue-800 mb-2'>SAM</h3>
+            <p className='text-2xl sm:text-3xl font-bold text-blue-600'>$8.5B</p>
+            <p className='text-xs sm:text-sm text-blue-700'>Frontend Tools by 2025</p>
+          </div>
+          <div className='bg-purple-50 p-4 sm:p-6 rounded-lg text-center'>
+            <h3 className='text-lg sm:text-xl font-semibold text-purple-800 mb-2'>SOM</h3>
+            <p className='text-2xl sm:text-3xl font-bold text-purple-600'>$1.2B</p>
+            <p className='text-xs sm:text-sm text-purple-700'>Initial Target by 2025</p>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 8: Target Market
+  {
+    title: 'Target Market',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Target Market Segmentation</h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='bg-gray-50 p-6 rounded-lg border border-gray-200'>
+            <h3 className='text-xl font-semibold text-gray-800 mb-3'>Primary: Enterprise</h3>
+            <p className='text-gray-600'>50-500+ frontend devs</p>
+            <p className='text-gray-600'>$100K-500K tooling spend</p>
+          </div>
+          <div className='bg-gray-50 p-6 rounded-lg border border-gray-200'>
+            <h3 className='text-xl font-semibold text-gray-800 mb-3'>Secondary: Mid-Market</h3>
+            <p className='text-gray-600'>15-50 frontend devs</p>
+            <p className='text-gray-600'>$25K-100K tooling spend</p>
+          </div>
+          <div className='bg-gray-50 p-6 rounded-lg border border-gray-200'>
+            <h3 className='text-xl font-semibold text-gray-800 mb-3'>Tertiary: Consultancies</h3>
+            <p className='text-gray-600'>10-100 devs per project</p>
+            <p className='text-gray-600'>$50K-200K tooling spend</p>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 9: Why Now?
+  {
+    title: 'Why Now?',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Why Now? The Perfect Storm</h2>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+          <div className='bg-green-50 p-4 rounded-lg'>
+            <h3 className='text-lg font-semibold text-green-800 mb-2'>1. Component-First is Mainstream</h3>
+            <p className='text-green-700'>React at 87% enterprise adoption; design systems are critical.</p>
+          </div>
+          <div className='bg-yellow-50 p-4 rounded-lg'>
+            <h3 className='text-lg font-semibold text-yellow-800 mb-2'>2. Existing Tools Hit Scale Limits</h3>
+            <p className='text-yellow-700'>Storybook for dev, Figma for design—both disconnected from code.</p>
+          </div>
+          <div className='bg-blue-50 p-4 rounded-lg'>
+            <h3 className='text-lg font-semibold text-blue-800 mb-2'>3. AI Makes Orchestration Possible</h3>
+            <p className='text-blue-700'>Semantic search and intelligent migration are now feasible.</p>
+          </div>
+          <div className='bg-red-50 p-4 rounded-lg'>
+            <h3 className='text-lg font-semibold text-red-800 mb-2'>4. Performance is Critical</h3>
+            <p className='text-red-700'>Netflix proved intelligent rendering can boost TTI by 50%.</p>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 10: Competitive Advantage
+  {
+    title: 'Competitive Advantage',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>The Orchestration Gap</h2>
+        <div className='overflow-x-auto mb-8'>
+          <table className='min-w-full bg-white border border-gray-200 rounded-lg'>
+            <thead className='bg-gray-50'>
+              <tr>
+                <th className='px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase'>Feature</th>
+                <th className='px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase'>Storybook</th>
+                <th className='px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase'>Bit.dev</th>
+                <th className='px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase'>Backstage</th>
+                <th className='px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase bg-blue-50'>Overture</th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200'>
+              {[
+                { feature: 'Cross-tool Integration', storybook: false, bit: 'Limited', backstage: false, overture: true },
+                { feature: 'Framework Agnostic', storybook: false, bit: false, backstage: false, overture: 'Universal' },
+                { feature: 'AI Capabilities', storybook: false, bit: false, backstage: false, overture: 'BYO' },
+                { feature: 'Visual Composer', storybook: false, bit: false, backstage: false, overture: true },
+                { feature: 'Migration Support', storybook: false, bit: false, backstage: false, overture: 'AI-powered' },
+                { feature: 'Performance Analysis', storybook: false, bit: false, backstage: false, overture: 'Netflix-style' },
+                { feature: 'Data Sovereignty', storybook: false, bit: false, backstage: false, overture: true },
+              ].map((row) => (
+                <tr key={row.feature}>
+                  <td className='px-4 py-2 text-sm font-medium text-gray-900'>{row.feature}</td>
+                  <td className='px-4 py-2 text-center'>{row.storybook ? <Check className='w-5 h-5 text-green-500 mx-auto' /> : <X className='w-5 h-5 text-red-500 mx-auto' />}</td>
+                  <td className='px-4 py-2 text-center'>
+                    {row.bit === 'Limited' ? (
+                      <Minus className='w-5 h-5 text-yellow-500 mx-auto' />
+                    ) : row.bit ? (
+                      <Check className='w-5 h-5 text-green-500 mx-auto' />
+                    ) : (
+                      <X className='w-5 h-5 text-red-500 mx-auto' />
+                    )}
+                  </td>
+                  <td className='px-4 py-2 text-center'>{row.backstage ? <Check className='w-5 h-5 text-green-500 mx-auto' /> : <X className='w-5 h-5 text-red-500 mx-auto' />}</td>
+                  <td className='px-4 py-2 text-center bg-blue-50'>
+                    {row.overture === 'BYO' || row.overture === 'Universal' || row.overture === 'AI-powered' || row.overture === 'Netflix-style' ? (
+                      <span className='text-sm font-semibold text-blue-700'>{row.overture}</span>
+                    ) : row.overture ? (
+                      <Check className='w-5 h-5 text-green-500 mx-auto' />
+                    ) : (
+                      <X className='w-5 h-5 text-red-500 mx-auto' />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 11: Business Model
+  {
+    title: 'Business Model',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Predictable SaaS Growth</h2>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+          <div className='bg-white p-6 rounded-lg border border-gray-200'>
+            <h3 className='text-xl font-semibold text-gray-900 mb-4'>Revenue Streams</h3>
+            <div className='space-y-3'>
+              <p className='text-gray-700'>
+                <strong className='text-blue-600'>Team Plan:</strong> $49/user/month
+              </p>
+              <p className='text-gray-700'>
+                <strong className='text-blue-600'>Enterprise Plan:</strong> $10K-50K/month (On-prem)
+              </p>
+              <p className='text-gray-700'>
+                <strong className='text-blue-600'>Migration Services:</strong> $25K-100K projects
+              </p>
+              <p className='text-gray-700'>
+                <strong className='text-blue-600'>Add-ons:</strong> Analytics, AI generation
+              </p>
             </div>
-            <div className='flex flex-col items-end gap-4'>
-              <h2 className='text-md font-semibold text-red-500 mb-3 '>Overture - Demo</h2>
-              <div className='flex items-center gap-2'>
-                <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2'>
-                  <Download className='w-4 h-4' />
-                  Export
-                </button>
-                <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
-                  <Send className='w-4 h-4' />
-                  Deploy
-                </button>
-                <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
-                  <Users className='w-4 h-4' />
-                  Share
-                </button>
-              </div>
+          </div>
+          <div className='bg-white p-6 rounded-lg border border-gray-200'>
+            <h3 className='text-xl font-semibold text-gray-900 mb-4'>Common Migration Scenarios</h3>
+            <div className='space-y-3 text-sm text-gray-700'>
+              <p>
+                <strong>Tool Consolidation ($50K):</strong> 60% faster discovery, $2M productivity gain.
+              </p>
+              <p>
+                <strong>Framework Migration ($75K):</strong> 95% compatibility, 4x faster than manual.
+              </p>
+              <p>
+                <strong>Performance Migration ($100K):</strong> 50% faster checkout, 15% conversion lift.
+              </p>
             </div>
           </div>
         </div>
-
-        {/* Canvas or Code View */}
-        {activeTab === 'design' ? (
-          <div className='flex-1 relative bg-white m-4 border-2 border-dashed border-gray-300 rounded-lg' onDragOver={handleDragOver} onDrop={handleDrop}>
-            {canvasComponents.length === 0 ? (
-              <div className='absolute inset-0 flex items-center justify-center text-gray-500'>
-                <div className='text-center'>
-                  <Layout className='w-12 h-12 mx-auto mb-4 text-gray-400' />
-                  <p className='text-lg font-medium'>Drag components here to start building</p>
-                  <p className='text-sm'>Components from Storybook, Figma, and Bit.dev</p>
-                </div>
-              </div>
-            ) : (
-              canvasComponents.map((component) => <ComponentPreview key={component.id} component={component} />)
-            )}
-          </div>
-        ) : (
-          <div className='flex-1 m-4 bg-gray-900 rounded-lg p-6'>
-            <pre className='text-green-400 font-mono text-sm overflow-auto'>{generateCode()}</pre>
-          </div>
-        )}
       </div>
+    ),
+  },
 
-      {/* Right Sidebar - Properties */}
-      {selectedComponent && (
-        <div className='w-80 bg-white border-l border-gray-200 p-4'>
-          <h3 className='text-lg font-semibold text-gray-900 mb-4'>Properties</h3>
-          <div className='space-y-4'>
+  // Slide 12: Go-to-Market
+  {
+    title: 'Go-to-Market',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Go-to-Market Strategy</h2>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+          <div>
+            <h3 className='text-xl sm:text-2xl font-semibold text-gray-800 mb-4'>Unit Economics</h3>
+            <ul className='space-y-3 list-disc list-inside text-gray-700'>
+              <li>
+                <strong>Average deal size:</strong> $125K annually
+              </li>
+              <li>
+                <strong>Sales cycle:</strong> 3-6 months for enterprise
+              </li>
+              <li>
+                <strong>Customer LTV:</strong> $750K+ (5-year retention)
+              </li>
+              <li>
+                <strong>Customer acquisition cost:</strong> {'<$20K'}
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className='text-xl sm:text-2xl font-semibold text-gray-800 mb-4'>Market Share Goals</h3>
+            <ul className='space-y-3 list-disc list-inside text-gray-700'>
+              <li>
+                <strong>Year 1:</strong> 0.1% market share ($1M ARR)
+              </li>
+              <li>
+                <strong>Year 3:</strong> 1.5% market share ($18M ARR)
+              </li>
+              <li>
+                <strong>Year 5:</strong> 5% market share ($60M ARR)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 13: Traction
+  {
+    title: 'Traction',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>Early Validation</h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='bg-green-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-green-800 mb-3'>PoC Results</h3>
+            <ul className='text-green-700 space-y-2 list-disc list-inside'>
+              <li>45% faster discovery</li>
+              <li>60% faster onboarding</li>
+              <li>500+ duplicates found</li>
+            </ul>
+          </div>
+          <div className='bg-blue-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-blue-800 mb-3'>Market Validation</h3>
+            <ul className='text-blue-700 space-y-2 list-disc list-inside'>
+              <li>87% cite fragmentation pain</li>
+              <li>Netflix case study validates</li>
+              <li>Early customer interest</li>
+            </ul>
+          </div>
+          <div className='bg-purple-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-purple-800 mb-3'>Validated Demand</h3>
+            <ul className='text-purple-700 space-y-2 list-disc list-inside'>
+              <li>$125K/yr avg spend</li>
+              <li>45% dev time on tooling</li>
+              <li>$500K+ migration costs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 14: Founder
+  {
+    title: 'The Founder',
+    content: (
+      <div className='text-center'>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>The Founder: Perfect Market Fit</h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='bg-blue-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-blue-800 mb-3'>Technical Credibility</h3>
+            <p className='text-blue-700'>Leading frontend architecture at Rakuten (100M+ users) & built $777M+ systems at Expedia.</p>
+          </div>
+          <div className='bg-green-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-green-800 mb-3'>Product Vision</h3>
+            <p className='text-green-700'>Pain-driven development to solve real enterprise frustrations I&apos;ve faced daily.</p>
+          </div>
+          <div className='bg-purple-50 p-6 rounded-lg'>
+            <h3 className='text-xl font-semibold text-purple-800 mb-3'>Execution Ability</h3>
+            <p className='text-purple-700'>Full-stack architecture and enterprise decision-making track record.</p>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 15: The Ask
+  {
+    title: 'The Ask: $120K',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center'>$120K Pre-Seed Investment</h2>
+        <div className='bg-gray-50 p-6 rounded-lg'>
+          <h3 className='text-xl sm:text-2xl font-semibold text-gray-800 mb-4 text-center'>Use of Funds</h3>
+          <div className='flex flex-col sm:flex-row sm:justify-around items-center text-center space-y-4 sm:space-y-0'>
             <div>
-              <label className='block text-sm font-medium text-gray-700 mb-2'>Component</label>
-              <div className={`p-2 rounded ${selectedComponent.library.color} text-sm`}>
-                {selectedComponent.name} ({selectedComponent.library.name})
-              </div>
+              <p className='text-2xl sm:text-3xl font-bold text-blue-600'>70%</p>
+              <p className='font-semibold text-gray-700'>Product Dev ($84K)</p>
+              <p className='text-sm text-gray-600'>Core MVP & Integrations</p>
             </div>
             <div>
-              <label className='block text-sm font-medium text-gray-700 mb-2'>Properties</label>
-              <div className='space-y-2'>
-                {Object.entries(selectedComponent.props).map(([key, value]: any) => (
-                  <div key={key} className='flex justify-between items-center p-2 bg-gray-50 rounded'>
-                    <span className='text-sm text-gray-600'>{key}</span>
-                    <span className='text-sm font-medium text-gray-900'>{value}</span>
-                  </div>
-                ))}
+              <p className='text-2xl sm:text-3xl font-bold text-green-600'>20%</p>
+              <p className='font-semibold text-gray-700'>Go-to-Market ($24K)</p>
+              <p className='text-sm text-gray-600'>Pilot Customer Acquisition</p>
+            </div>
+            <div>
+              <p className='text-2xl sm:text-3xl font-bold text-purple-600'>10%</p>
+              <p className='font-semibold text-gray-700'>Team Building ($12K)</p>
+              <p className='text-sm text-gray-600'>Co-founder Recruitment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // Slide 16: Milestones
+  {
+    title: '12-Month Milestones',
+    content: (
+      <div>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-6'>12-Month Milestones</h2>
+        <div className='relative'>
+          <div className='border-l-2 border-blue-500 absolute h-full left-1.5'></div>
+          <div className='space-y-8'>
+            <div className='flex items-center'>
+              <div className='bg-blue-500 rounded-full h-3 w-3 z-10'></div>
+              <div className='ml-4 bg-blue-50 p-4 rounded-lg w-full'>
+                <h4 className='font-bold text-blue-800'>Q3 2025: Foundation</h4>
+                <p className='text-blue-700'>Secure $120K, complete MVP, establish open-source core.</p>
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <div className='bg-blue-500 rounded-full h-3 w-3 z-10'></div>
+              <div className='ml-4 bg-blue-50 p-4 rounded-lg w-full'>
+                <h4 className='font-bold text-blue-800'>Q4 2025: Validation</h4>
+                <p className='text-blue-700'>3 pilot customers active, technical co-founder onboarded.</p>
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <div className='bg-blue-500 rounded-full h-3 w-3 z-10'></div>
+              <div className='ml-4 bg-blue-50 p-4 rounded-lg w-full'>
+                <h4 className='font-bold text-blue-800'>Q1 2026: Growth</h4>
+                <p className='text-blue-700'>Achieve PMF, $50K ARR from pilots, performance features live.</p>
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <div className='bg-blue-500 rounded-full h-3 w-3 z-10'></div>
+              <div className='ml-4 bg-blue-50 p-4 rounded-lg w-full'>
+                <h4 className='font-bold text-blue-800'>Q2 2026: Scale</h4>
+                <p className='text-blue-700'>Seed round ready ($2M), 10+ customers, $200K ARR.</p>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
+    ),
+  },
+
+  // Slide 17: Vision & Contact
+  {
+    title: 'Vision & Contact',
+    content: (
+      <div className='text-center'>
+        <h2 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-4'>Ready to Orchestrate the Future?</h2>
+        <p className='text-lg sm:text-xl text-gray-600 mb-8'>Become the infrastructure layer for component-based development—the &quot;AWS for frontend components&quot;.</p>
+        <div className='bg-gray-50 p-6 rounded-lg'>
+          <h3 className='text-xl sm:text-2xl font-semibold text-gray-800 mb-4'>Contact Information</h3>
+          <p className='text-lg text-gray-700'>Asem Qaffaf</p>
+          <p className='text-lg text-gray-700'>asem@qaffaf.com</p>
+          <a href='https://overture-demo.vercel.app/demo' target='_blank' rel='noopener noreferrer' className='text-lg text-blue-600 hover:underline mt-2 inline-block'>
+            overture-demo.vercel.app/demo
+          </a>
+        </div>
+        <p className='mt-8 text-2xl font-semibold text-gray-800'>{'Orchestrate. Scale. Ship.'}</p>
+      </div>
+    ),
+  },
+];
+const PitchDeck = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const handlePrev = () => {
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className='bg-gray-100 min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 font-sans'>
+      <div className='w-full max-w-5xl bg-white rounded-lg shadow-2xl overflow-hidden'>
+        {/* Header */}
+        <div className='flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200'>
+          <div className='flex items-center space-x-2'>
+            <div className='w-3 h-3 bg-red-500 rounded-full'></div>
+            <div className='w-3 h-3 bg-yellow-500 rounded-full'></div>
+            <div className='w-3 h-3 bg-green-500 rounded-full'></div>
+          </div>
+          <div className='text-sm text-gray-600 font-medium'>{slides[currentSlide].title}</div>
+          <a href='https://overture-demo.vercel.app/demo' target='_blank' rel='noopener noreferrer' className='text-gray-400 hover:text-gray-600'>
+            <ExternalLink className='w-5 h-5' />
+          </a>
+        </div>
+
+        {/* Slide Content */}
+        <div className='p-6 sm:p-8 md:p-12 min-h-[60vh] flex items-center'>
+          <div className='w-full'>{slides[currentSlide].content}</div>
+        </div>
+
+        {/* Footer */}
+        <div className='flex items-center justify-between p-4 bg-gray-50 border-t border-gray-200'>
+          <div className='flex items-center space-x-4'>
+            <button onClick={handlePrev} className='p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 transition-colors'>
+              <ChevronLeft className='w-5 h-5' />
+            </button>
+            <button onClick={handleNext} className='p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 transition-colors'>
+              <ChevronRight className='w-5 h-5' />
+            </button>
+            <span className='text-sm text-gray-500'>
+              {currentSlide + 1} / {slides.length}
+            </span>
+          </div>
+          <div className='w-1/3 md:w-1/2'>
+            <div className='w-full bg-gray-200 rounded-full h-2'>
+              <div className='bg-blue-600 h-2 rounded-full transition-all duration-300 ease-in-out' style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default VisualComposer;
+export default PitchDeck;
