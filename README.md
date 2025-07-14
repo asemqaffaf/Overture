@@ -1,5 +1,12 @@
 # Overture
 
+<center>
+
+  ![Overture Logo](https://overture-demo.vercel.app/_next/image?url=%2Foverture_logo.png&w=384&q=75)
+    
+    # Overture: The Future of Enterprise Frontend Development
+</center>
+
 ## The Problem: Enterprise Frontend Chaos
 
 Enterprises face a hidden crisis:
