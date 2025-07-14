@@ -182,22 +182,19 @@ ${codeLines.map((line) => `      ${line}`).join('\n')}
                 </button>
               </div>
             </div>
-            <div className='flex flex-col items-end gap-4'>
-              <h2 className='text-md font-semibold text-red-500 mb-3 '>Overture - Demo</h2>
-              <div className='flex items-center gap-2'>
-                <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2'>
-                  <Download className='w-4 h-4' />
-                  Export
-                </button>
-                <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
-                  <Send className='w-4 h-4' />
-                  Deploy
-                </button>
-                <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
-                  <Users className='w-4 h-4' />
-                  Share
-                </button>
-              </div>
+            <div className='flex items-center gap-2'>
+              <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2'>
+                <Download className='w-4 h-4' />
+                Export
+              </button>
+              <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
+                <Send className='w-4 h-4' />
+                Deploy
+              </button>
+              <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2'>
+                <Users className='w-4 h-4' />
+                Share
+              </button>
             </div>
           </div>
         </div>
