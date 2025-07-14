@@ -53,7 +53,7 @@ const HomePage = () => {
                 <p className='text-gray-400 flex-grow text-left'>Build pages and applications visually by dragging and dropping components from your design systems.</p>
               </Link>
               <Link
-                href='/migration-intelligence'
+                href='/migration-Intelligence'
                 className='flex flex-col p-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-gray-700/50 hover:border-yellow-500'
               >
                 <div className='p-3 bg-yellow-500/10 rounded-full mb-6 self-start'>

@@ -12,7 +12,7 @@ const Footer = () => {
     Platform: [
       { name: 'Component Intelligence', href: '/component-intelligence-platform' },
       { name: 'Visual Composer', href: '/visual-composer' },
-      { name: 'Migration Intelligence', href: '/migration-intelligence' },
+      { name: 'Migration Intelligence', href: '/migration-Intelligence' },
       { name: 'Performance Orchestration', href: '/performance-orchestration' },
     ],
     Company: [

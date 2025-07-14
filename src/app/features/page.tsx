@@ -53,7 +53,7 @@ const FeaturesPage = () => {
           <p className="text-gray-600 mb-6 flex-grow">
             Seamlessly plan and execute migrations with AI-powered assistance. Optimize your transition between frameworks with zero downtime.
           </p>
-          <Link href="/migration-intelligence" className="mt-auto inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+          <Link href="/migration-Intelligence" className="mt-auto inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
               Discover Migration Tools
               <ArrowRight className="ml-2 -mr-1 h-5 w-5" />
           </Link>
