@@ -113,7 +113,7 @@ const OvertureDemo = () => {
     } else {
       setDiscoveryResults([]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   const StatusBadge = ({ status }: any) => {
@@ -205,7 +205,7 @@ const OvertureDemo = () => {
                     placeholder="Search components across all tools... (try 'button with loading')"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+                    className='w-full pl-10 pr-4 py-2 border text-gray-600 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
                   />
                 </div>
                 <div className='flex items-center gap-2'>
