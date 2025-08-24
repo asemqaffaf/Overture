@@ -495,7 +495,7 @@ const handleAddToCart = async () => {
               <div className='flex items-center justify-between'>
                 <h2 className='text-xl font-bold text-gray-900'>Code Transformation Preview</h2>
                 <button onClick={() => setShowCodePreview(false)} className='text-gray-400 hover:text-gray-600'>
-                  ×
+                  <p className='text-gray-400 hover:text-gray-600 text-3xl'>×</p>
                 </button>
               </div>
             </div>

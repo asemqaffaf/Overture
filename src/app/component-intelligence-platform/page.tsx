@@ -394,8 +394,8 @@ const OvertureDemo = () => {
                   <h2 className='text-xl font-bold text-gray-900'>{selectedComponent.name}</h2>
                   <SourceBadge source={selectedComponent.source} icon={selectedComponent.icon} />
                 </div>
-                <button onClick={() => setSelectedComponent(null)} className='text-gray-400 hover:text-gray-600'>
-                  ×
+                <button onClick={() => setSelectedComponent(null)}>
+                  <p className='text-gray-400 hover:text-gray-600 text-3xl'>×</p>
                 </button>
               </div>
             </div>
